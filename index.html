@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body{
+                background-color: #0093E9;
+                background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+
+            }
+            .div1{
+                position:absolute;
+                top: 5%;
+                right: 50%;
+                transform: translate(50%,5%);
+                width: 100%;
+                text-align: center;
+            }
+            .div2{
+                position: absolute;
+                top: 25%;
+                right: 50%;
+                transform: translate(50%,25%);
+                width: 100%;
+                text-align: center;
+            }
+            
+            .speech{
+                margin-top: 10px;
+                width: 10%;
+                height: 64px;
+                background-color: rgba(0, 128, 255, 0.362);
+                transition: 0.5s;
+                border-radius: 10px;
+                color: white;
+                font-size: 24px;
+            }
+            .speech:hover{
+                margin-top: 10px;
+                background-color: rgb(0, 128, 255);
+            }
+
+            .record{
+                margin-top: 10px;
+                width: 10%;
+                height: 64px;
+                background-color: rgba(255, 0, 0, 0.323);
+                transition: 0.5s;
+                border-radius: 10px;
+                color: white;
+                font-size: 24px;
+            }
+            .record:hover{
+                background-color: rgb(255, 0, 0);
+            }
+            #text{
+                width: 50%;
+                height: 32px;
+                font-size: 24px;
+            }
+            #convert_text{
+                font-size: 24px;
+                height: 250px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="div1">
+        <h1>تحويل النص الى كلام</h1>
+        <input type="text" id="text">
+        <br>
+        <button class="speech" onclick="speech()">تشغيل</button>
+        <!--كود تحويل الكلام الى نص-->
+        <script>
+
+            function speech(){
+                //استدعاء النص من المدخل من نوع نص
+                let text = document.getElementById("text").value;
+                const msg = new SpeechSynthesisUtterance(
+                text
+                );
+                window.speechSynthesis.speak(msg);  
+            }
+
+        </script>
+        </div>
+
+
+        <div class="div2">
+        <h1>تحويل الكلام الى نص</h1>
+        <textarea name="" id="convert_text" rows="20" cols="50"></textarea> 
+        <br>
+        
+        <button class="record" id="click_to_record">ابدأ التسجيل</button>
+
+        <!--كود  تحويل الكلام الى نص-->
+        <script>
+            //عند الظغط على الزر إبدأ التسجيل
+            click_to_record.addEventListener('click',function(){
+                var speech = true;
+                window.SpeechRecognition = window.webkitSpeechRecognition;
+
+                const recognition = new SpeechRecognition();
+                recognition.interimResults = true;
+
+                recognition.addEventListener('result', e => {
+                    const transcript = Array.from(e.results)
+                        .map(result => result[0])
+                        .map(result => result.transcript)
+                        .join('')
+                    //كتابة الكلام على منطقة النص
+                    document.getElementById("convert_text").innerText = transcript;
+                    //console.log(transcript);
+                });
+                //اذا التسجيل متاح ابدا التسجيل
+                if (speech == true) {
+                    recognition.start();
+                }
+            })
+        </script>  
+        </div>
+
+    </body>
+</html>
